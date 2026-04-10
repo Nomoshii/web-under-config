@@ -251,10 +251,15 @@
     }
 
     @keyframes shimmer {
-      100% { transform: translateX(100%); }
+      100% { transform:
+    .status-panel {
+      border-radius: 22px;
+      border: 1px solid var(--border-soft);
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(239,246,255,0.72));
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.05);
     }
 
-    .status-button {
+.status-button {
       width: 100%;
       border: 1px solid rgba(37,99,235,0.10);
       border-radius: 18px;
@@ -327,20 +332,14 @@
           </p>
         </div>
 
-        <div class="grid gap-3 sm:grid-cols-3 mb-8">
-          <div class="chip justify-center">Current phase • Deployment</div>
-          <div class="chip justify-center">ETA • 12 min</div>
-          <div class="chip justify-center">Next check • 2:45 PM</div>
+        <div class="grid gap-3 sm:<div class="status-panel p-5 sm:p-6 mb-8 text-center">
+          <p class="text-sm font-semibold text-slate-900 mb-2">Maintenance in progress</p>
+          <p class="text-sm muted leading-7 max-w-2xl mx-auto">
+            The platform is temporarily unavailable while scheduled work is being completed. Please come back again later.
+          </p>
         </div>
-
-        <div class="section-card p-5 sm:p-6 mb-8">
-          <div class="flex items-center justify-between gap-4 mb-3">
-            <div>
-              <p class="text-sm font-semibold text-slate-900">Upgrade completion</p>
-              <p class="text-xs muted mt-1">Core services remain available while optimization tasks continue.</p>
-            </div>
             <div class="text-right">
-              <p class="text-2xl font-bold text-slate-900">47%</p>
+              <p class="text-2xl font-bold text-slate-900">68%</p>
               <p class="text-xs text-amber-500">Stabilizing services</p>
             </div>
           </div>
@@ -372,12 +371,12 @@
         </button>
 
         <div id="statusMessage" class="mt-4 text-center text-sm muted" aria-live="polite">
-          Last status sync completed successfully.
+          The platform is still under maintenance. Please come back again later.
         </div>
 
         <div class="mt-8 pt-6 border-t border-blue-100 text-center text-sm muted">
           Need urgent support? Contact
-          <a href="mailto:support@example.com" class="text-blue-600 hover:text-blue-700 font-medium">mornchhaypor@gmail.com</a>
+          <a href="mailto:support@example.com" class="text-blue-600 hover:text-blue-700 font-medium">support@example.com</a>
         </div>
       </div>
     </section>
@@ -467,7 +466,7 @@
           </svg>`;
         }
         btnText.textContent = 'Check if we’re back online';
-        statusMessage.textContent = `Maintenance is still in progress. Last verified at ${time}. Estimated completion remains about 12 minutes.`;
+        statusMessage.textContent = `The platform is still under maintenance. Last checked at ${time}. Please come back again later.`;
       }, 1800);
     });
   </script>
