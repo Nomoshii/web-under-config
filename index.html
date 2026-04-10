@@ -1,167 +1,475 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Under Maintenance</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Custom gradients */
-        
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        /* Card hover effect */
-        
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        /* Button hover */
-        
-        .btn-primary:hover {
-            background-color: #5a67d8;
-        }
-        
-        .btn-secondary:hover {
-            background-color: #edf2f7;
-        }
-        /* Animation for icon */
-        
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-            100% {
-                transform: translateY(0px);
-            }
-        }
-        
-        .float-icon {
-            animation: float 3s ease-in-out infinite;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Maintenance Status</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #f7fbff;
+      --bg-soft: #eef6ff;
+      --surface: rgba(255, 255, 255, 0.78);
+      --surface-strong: rgba(255, 255, 255, 0.92);
+      --border: rgba(37, 99, 235, 0.12);
+      --border-soft: rgba(37, 99, 235, 0.08);
+      --text: #0f172a;
+      --muted: #5f7291;
+      --blue-1: #2563eb;
+      --blue-2: #3b82f6;
+      --blue-3: #60a5fa;
+      --blue-4: #93c5fd;
+      --amber: #f59e0b;
+      --grid: rgba(37, 99, 235, 0.05);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at 10% 12%, rgba(59, 130, 246, 0.14), transparent 26%),
+        radial-gradient(circle at 88% 16%, rgba(147, 197, 253, 0.22), transparent 22%),
+        radial-gradient(circle at 50% 100%, rgba(96, 165, 250, 0.12), transparent 32%),
+        linear-gradient(180deg, #fbfdff 0%, var(--bg) 58%, #eef5ff 100%);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, var(--grid) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0.82) 50%, rgba(0,0,0,0.18) 78%, transparent 100%);
+      -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0.82) 50%, rgba(0,0,0,0.18) 78%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb {
+      position: fixed;
+      border-radius: 9999px;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+      animation: floatOrb 14s ease-in-out infinite alternate;
+    }
+
+    .orb-1 {
+      width: 280px;
+      height: 280px;
+      top: 4%;
+      left: 4%;
+      background: rgba(59, 130, 246, 0.16);
+    }
+
+    .orb-2 {
+      width: 340px;
+      height: 340px;
+      top: 10%;
+      right: 6%;
+      background: rgba(147, 197, 253, 0.28);
+      animation-duration: 18s;
+    }
+
+    .orb-3 {
+      width: 240px;
+      height: 240px;
+      bottom: 6%;
+      left: 45%;
+      background: rgba(96, 165, 250, 0.16);
+      animation-duration: 16s;
+    }
+
+    @keyframes floatOrb {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to { transform: translate3d(0, -18px, 0) scale(1.05); }
+    }
+
+    #particles {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .shell {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    .glass-card {
+      position: relative;
+      width: 100%;
+      max-width: 780px;
+      border-radius: 30px;
+      background: linear-gradient(180deg, var(--surface-strong), var(--surface));
+      border: 1px solid var(--border);
+      box-shadow:
+        0 24px 60px rgba(37, 99, 235, 0.10),
+        0 8px 24px rgba(15, 23, 42, 0.04),
+        inset 0 1px 0 rgba(255,255,255,0.85);
+      backdrop-filter: blur(20px) saturate(140%);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+      overflow: hidden;
+    }
+
+    .glass-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(37,99,235,0.06) 0.7px, transparent 0.7px);
+      background-size: 10px 10px;
+      opacity: 0.18;
+      pointer-events: none;
+    }
+
+    .top-strip {
+      height: 4px;
+      background: linear-gradient(90deg, var(--blue-3), var(--blue-1), var(--blue-2), var(--blue-4));
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 9999px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--border-soft);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1;
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.05);
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 9999px;
+      background: var(--amber);
+      box-shadow: 0 0 0 rgba(245, 158, 11, 0.4);
+      animation: blinkAmber 1.2s infinite;
+    }
+
+    @keyframes blinkAmber {
+      0%, 100% { opacity: 0.45; box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.0); }
+      50% { opacity: 1; box-shadow: 0 0 16px 2px rgba(245, 158, 11, 0.28); }
+    }
+
+    .pulse-rings {
+      position: relative;
+      width: 102px;
+      height: 102px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto;
+    }
+
+    .pulse-rings::before,
+    .pulse-rings::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      border: 1px solid rgba(37, 99, 235, 0.16);
+      animation: ringPulse 2.8s ease-out infinite;
+    }
+
+    .pulse-rings::after {
+      animation-delay: 1.2s;
+      border-color: rgba(96, 165, 250, 0.18);
+    }
+
+    @keyframes ringPulse {
+      0% { transform: scale(0.88); opacity: 0.95; }
+      100% { transform: scale(1.56); opacity: 0; }
+    }
+
+    .icon-core {
+      width: 76px;
+      height: 76px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.94), rgba(239,246,255,0.96));
+      border: 1px solid rgba(37, 99, 235, 0.10);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.9),
+        0 12px 24px rgba(37, 99, 235, 0.10);
+      color: var(--blue-1);
+    }
+
+    .section-card {
+      border-radius: 22px;
+      border: 1px solid var(--border-soft);
+      background: rgba(255,255,255,0.72);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.05);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 14px;
+      border-radius: 9999px;
+      background: linear-gradient(180deg, rgba(37,99,235,0.06), rgba(37,99,235,0.10));
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(37,99,235,0.06);
+    }
+
+    .progress-fill {
+      position: relative;
+      width: 68%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue-4), var(--blue-2), var(--blue-1));
+      box-shadow: 0 0 20px rgba(59,130,246,0.18);
+      overflow: hidden;
+    }
+
+    .progress-fill::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      transform: translateX(-100%);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.65), transparent);
+      animation: shimmer 2.2s linear infinite;
+    }
+
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+
+    .status-button {
+      width: 100%;
+      border: 1px solid rgba(37,99,235,0.10);
+      border-radius: 18px;
+      padding: 14px 18px;
+      background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
+      color: white;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.16);
+    }
+
+    .status-button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 34px rgba(37, 99, 235, 0.20);
+    }
+
+    .status-button:disabled {
+      opacity: 0.88;
+      cursor: not-allowed;
+    }
+
+    .btn-spinner {
+      width: 18px;
+      height: 18px;
+      border-radius: 9999px;
+      border: 2px solid rgba(255,255,255,0.28);
+      border-top-color: rgba(255,255,255,0.95);
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .muted { color: var(--muted); }
+    .eyebrow { letter-spacing: 0.26em; }
+    .title-glow { text-shadow: 0 0 18px rgba(96,165,250,0.10); }
+  </style>
 </head>
+<body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <canvas id="particles"></canvas>
 
-<body class="min-h-screen bg-gray-50">
-    <div class="flex items-center justify-center min-h-screen p-4">
-        <div class="w-full max-w-xl">
-            <!-- Main Card -->
-            <div class="bg-white rounded-xl shadow-2xl overflow-hidden card-hover">
-                <!-- Header Section -->
-                <div class="bg-gradient-to-br from-indigo-600 to-purple-600 px-8 py-12 text-center">
-                    <!-- Icon -->
-                    <div class="mb-6">
-                        <div class="inline-block bg-white/20 rounded-full w-20 h-20 flex items-center justify-center float-icon mb-4">
-                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m-6 0a9 9 0 100-18 9 9 0 000 18z"></path>
-                            </svg>
-                        </div>
-                    </div>
-
-                    <!-- Title -->
-                    <h1 class="text-3xl font-bold text-white">
-                        Website Under Maintenance
-                    </h1>
-
-                    <!-- Subtitle -->
-                    <p class="mt-2 text-xl text-white/90">
-                        We're improving your experience
-                    </p>
-                </div>
-
-                <!-- Body Section -->
-                <div class="px-8 py-10 space-y-6">
-                    <!-- Message -->
-                    <p class="text-center text-gray-600 leading-relaxed">
-                        We're currently performing scheduled maintenance to enhance our services and provide you with a better experience. Please check back shortly.
-                    </p>
-
-                    <!-- Status Indicator -->
-                    <div class="flex items-center justify-center space-x-3">
-                        <div class="w-3 h-3 bg-indigo-500 rounded-full animate-pulse"></div>
-                        <span class="text-sm text-gray-500">Maintenance in progress</span>
-                        <div class="w-3 h-3 bg-indigo-500 rounded-full animate-pulse"></div>
-                    </div>
-
-                    <!-- Details -->
-                    <div class="space-y-4">
-                        <div class="flex items-start space-x-3">
-                            <div class="flex-shrink-0">
-                                <svg class="w-5 h-5 text-indigo-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.029 9-11.622 0-1.504-.203-2.928-.582-4.236z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-600">
-                                    <span class="font-medium">Expected completion:</span> Soon
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start space-x-3">
-                            <div class="flex-shrink-0">
-                                <svg class="w-5 h-5 text-indigo-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c0 1.105-.895 2-2 2s-2-.895-2-2 .895-2 2-2 2 .895 2 2zm0 12c-4.411 0-8-3.589-8-8h4c0 1.105.895 2 2 2s2-.895 2-2 .895-2 2-2h4c0 4.411-3.589 8-8 8z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-600">
-                                    <span class="font-medium">Status:</span> Under maintenance
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Action Button -->
-                    <button id="checkStatusBtn" class="w-full bg-indigo-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-indigo-700 transition-colors flex items-center justify-center space-x-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.001 8.001 0 01-15.357-2m15.357 2H15"></path>
-                        </svg>
-                        Check if we're back online
-                    </button>
-
-                    <!-- Contact Info -->
-                    <div class="border-t pt-6 mt-8 text-center">
-                        <p class="text-sm text-gray-500">
-                            Need help? Contact us at
-                            <a href="mailto:mornchhaypor@gmail.com" class="text-indigo-600 hover:text-indigo-500 font-medium">
-                                mornchhaypor@gmail.com
-                            </a>
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Footer -->
-                <div class="px-8 py-6 bg-gray-50 text-center border-t">
-                    <p class="text-xs text-gray-400">
-                        © 2024 ENG BONG All rights reserved.
-                    </p>
-                </div>
-            </div>
+  <main class="shell">
+    <section class="glass-card">
+      <div class="top-strip"></div>
+      <div class="p-6 sm:p-8 md:p-10">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-8">
+          <div class="chip">
+            <span class="status-dot"></span>
+            <span>Live maintenance window</span>
+          </div>
+          <div class="chip">Platform rollout • Batch 03</div>
         </div>
-    </div>
 
-    <script>
-        // Button functionality
-        document.getElementById("checkStatusBtn").addEventListener("click", function() {
-            const originalText = this.innerHTML;
-            this.innerHTML = '<span class="mr-2"></span>Checking...';
-            this.disabled = true;
+        <div class="text-center mb-8">
+          <div class="pulse-rings mb-6">
+            <div class="icon-core">
+              <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M12 8v4l2.5 2.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+          </div>
 
-            // Simulate API call
-            setTimeout(() => {
-                this.innerHTML = originalText;
-                this.disabled = false;
-                // In a real app, you might check a status endpoint
-                alert("We're still under maintenance. Please check back in another times.");
-            }, 1500);
-        });
-    </script>
+          <p class="uppercase eyebrow text-[11px] font-semibold text-blue-500 mb-3">Scheduled service update</p>
+          <h1 class="text-3xl sm:text-4xl font-bold title-glow">We’re improving the platform</h1>
+          <p class="mt-4 text-sm sm:text-base muted max-w-2xl mx-auto leading-7">
+            Our team is currently performing planned maintenance to deliver better performance, stronger stability, and a more polished user experience.
+          </p>
+        </div>
+
+        <div class="grid gap-3 sm:grid-cols-3 mb-8">
+          <div class="chip justify-center">Current phase • Deployment</div>
+          <div class="chip justify-center">ETA • 12 min</div>
+          <div class="chip justify-center">Next check • 2:45 PM</div>
+        </div>
+
+        <div class="section-card p-5 sm:p-6 mb-8">
+          <div class="flex items-center justify-between gap-4 mb-3">
+            <div>
+              <p class="text-sm font-semibold text-slate-900">Upgrade completion</p>
+              <p class="text-xs muted mt-1">Core services remain available while optimization tasks continue.</p>
+            </div>
+            <div class="text-right">
+              <p class="text-2xl font-bold text-slate-900">47%</p>
+              <p class="text-xs text-amber-500">Stabilizing services</p>
+            </div>
+          </div>
+          <div class="progress-track" aria-label="Maintenance progress">
+            <div class="progress-fill"></div>
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4 mb-8">
+          <div class="section-card p-5">
+            <p class="text-sm font-semibold text-slate-900 mb-2">What’s happening</p>
+            <p class="text-sm muted leading-7">
+              We are updating infrastructure, refreshing service layers, and validating the latest release path before restoring full access.
+            </p>
+          </div>
+          <div class="section-card p-5">
+            <p class="text-sm font-semibold text-slate-900 mb-2">What to expect</p>
+            <p class="text-sm muted leading-7">
+              Some services may remain temporarily unavailable until final checks complete. No action is required from you.
+            </p>
+          </div>
+        </div>
+
+        <button id="checkStatusBtn" class="status-button flex items-center justify-center gap-3" type="button">
+          <svg id="btnIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9M4.582 9H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2M19.419 15H15"></path>
+          </svg>
+          <span id="btnText">Check if we’re back online</span>
+        </button>
+
+        <div id="statusMessage" class="mt-4 text-center text-sm muted" aria-live="polite">
+          Last status sync completed successfully.
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-blue-100 text-center text-sm muted">
+          Need urgent support? Contact
+          <a href="mailto:support@example.com" class="text-blue-600 hover:text-blue-700 font-medium">mornchhaypor@gmail.com</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const colors = [
+      'rgba(37,99,235,0.55)',
+      'rgba(59,130,246,0.5)',
+      'rgba(147,197,253,0.45)'
+    ];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function createParticles() {
+      const count = Math.max(26, Math.floor(window.innerWidth / 44));
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2.3 + 0.7,
+        speedY: Math.random() * 0.5 + 0.2,
+        driftX: (Math.random() - 0.5) * 0.28,
+        alpha: Math.random() * 0.35 + 0.18,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      }));
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.fillStyle = p.color.replace(/0\.[0-9]+\)/, `${p.alpha})`);
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = p.color;
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        p.y -= p.speedY;
+        p.x += p.driftX;
+
+        if (p.y < -10) {
+          p.y = canvas.height + 10;
+          p.x = Math.random() * canvas.width;
+        }
+        if (p.x < -10) p.x = canvas.width + 10;
+        if (p.x > canvas.width + 10) p.x = -10;
+      });
+      requestAnimationFrame(drawParticles);
+    }
+
+    resizeCanvas();
+    createParticles();
+    drawParticles();
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      createParticles();
+    });
+
+    const button = document.getElementById('checkStatusBtn');
+    const btnText = document.getElementById('btnText');
+    const statusMessage = document.getElementById('statusMessage');
+
+    button.addEventListener('click', () => {
+      if (button.disabled) return;
+
+      button.disabled = true;
+      const icon = document.getElementById('btnIcon');
+      if (icon) icon.outerHTML = '<span id="btnLoader" class="btn-spinner"></span>';
+      btnText.textContent = 'Checking live status…';
+      statusMessage.textContent = 'Polling status endpoint and verifying service health.';
+
+      setTimeout(() => {
+        const now = new Date();
+        const time = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+        button.disabled = false;
+        const loader = document.getElementById('btnLoader');
+        if (loader) {
+          loader.outerHTML = `<svg id="btnIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9M4.582 9H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2M19.419 15H15"></path>
+          </svg>`;
+        }
+        btnText.textContent = 'Check if we’re back online';
+        statusMessage.textContent = `Maintenance is still in progress. Last verified at ${time}. Estimated completion remains about 12 minutes.`;
+      }, 1800);
+    });
+  </script>
 </body>
-
 </html>
